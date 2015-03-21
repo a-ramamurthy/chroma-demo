@@ -8,52 +8,55 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.chroma.demo.screen.FightScreen;
+import com.mygdx.chroma.demo.screen.ScreenManager;
 
 /**
  * The main class for the demo for Chroma. *
  */
 public class ChromaDemoMain extends ApplicationAdapter {
-	private static final String TAG = ChromaDemoMain.class.getName();
-	AssetManager am = new AssetManager();
-	SpriteBatch batch;
-	Texture img;
-	BitmapFont font;
-	
+	private SpriteBatch batch;
+
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
-		font=new BitmapFont();
-		font.setColor(Color.WHITE);
+		ScreenManager.setScreen(new FightScreen());
 	}
 
 	@Override
-	public void render () {
+	public void dispose() {
+		if (ScreenManager.getCurrentScreen() != null)
+			ScreenManager.getCurrentScreen().dispose();
+		batch.dispose();
+	}
+
+	@Override
+	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		font.draw(batch, "Hello World", 200, 200);
-		batch.end();
+
+		if (ScreenManager.getCurrentScreen() != null)
+			ScreenManager.getCurrentScreen().update();
+
+		if (ScreenManager.getCurrentScreen() != null)
+			ScreenManager.getCurrentScreen().render(batch);
 	}
-	
-	public void resize(int width, int height)
-	{
-		
+
+	@Override
+	public void resize(int width, int height) {
+		if (ScreenManager.getCurrentScreen() != null)
+			ScreenManager.getCurrentScreen().resize(width, height);
 	}
-	
-	public void pause()
-	{
-		
-	
+
+	@Override
+	public void pause() {
+		if (ScreenManager.getCurrentScreen() != null)
+			ScreenManager.getCurrentScreen().pause();
 	}
-	
-	public void resume()
-	{
-		
-	}
-	
-	public void dispose()
-	{
-		font.dispose();
-		batch.dispose();
+
+	@Override
+	public void resume() {
+		if (ScreenManager.getCurrentScreen() != null)
+			ScreenManager.getCurrentScreen().resume();
 	}
 }

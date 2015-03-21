@@ -5,11 +5,21 @@
  */
 package com.mygdx.chroma.demo.screen;
 
-
 /**
  * Manages which screens appear when.
  */
-public abstract class ScreenManager
-{
-	
+public abstract class ScreenManager {
+
+	private static Screen currentScreen;
+
+	public static void setScreen(Screen screen) {
+		if (currentScreen != null)
+			currentScreen.dispose();
+		currentScreen = screen;
+		currentScreen.create();
+	}
+
+	public static Screen getCurrentScreen() {
+		return currentScreen;
+	}
 }

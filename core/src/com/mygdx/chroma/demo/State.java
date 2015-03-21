@@ -13,6 +13,7 @@ import java.io.File;
  */
 public class State 
 {
+
 	/** The default constructor. Creates a randomized game in its start state. */
 	public State()
 	{
