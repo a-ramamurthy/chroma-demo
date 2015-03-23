@@ -22,4 +22,5 @@ public abstract class ScreenManager {
 	public static Screen getCurrentScreen() {
 		return currentScreen;
 	}
+
 }

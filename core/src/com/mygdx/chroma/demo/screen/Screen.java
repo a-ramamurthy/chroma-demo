@@ -5,12 +5,13 @@
  */
 package com.mygdx.chroma.demo.screen;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * Represents an abstract generic screen.
  */
-public abstract class Screen 
+public abstract class Screen extends ApplicationAdapter
 {
 	public abstract void create();
 	
