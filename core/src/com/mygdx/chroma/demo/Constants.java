@@ -13,7 +13,7 @@ public class Constants
 {
 
 	/** The number of squares in each column and row of the world map. */
-	public static final int GRID_SIZE=5;
+	public static final int GRID_SIZE=3;
 	/** The width of the game screen in pixels. */
 	public static final int WIDTH = 1280;
 	/** The height of the game screen in pixels. */
@@ -29,7 +29,7 @@ public class Constants
 	
 	public static final float WORLD_STEP=1/60f;
 	
-	public static final float ENTITY_ANIM_SPEED=0.25f;
+	public static final float ENTITY_ANIM_SPEED=0.15f;
 	
 	public static final float PLAYER_MASS=800;
 	

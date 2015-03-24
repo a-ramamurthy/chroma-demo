@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * Represents the screen that appears when HP reaches 0.
  */
-public class GameOverScreen extends Screen
+public class TitleScreen extends Screen
 {
 
     Texture image;
@@ -23,7 +23,7 @@ public class GameOverScreen extends Screen
     @Override
     public void create()
     {
-	image=new Texture(Gdx.files.internal("game-over.png"));
+	image=new Texture(Gdx.files.internal("title.png"));
 	
     }
 
@@ -35,8 +35,6 @@ public class GameOverScreen extends Screen
     {
 	if(Gdx.input.isKeyPressed(Keys.ENTER))
 	    ScreenManager.setScreen(new FightScreen());
-	if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-		System.exit(0);
 	
     }
 
