@@ -104,7 +104,7 @@ public class Player extends ActiveEntity
 	     else if (isAttacking)
 	    {
 		curSprite.setRegion(attackAnim.getKeyFrame(stateTime+=Gdx.graphics.getDeltaTime(), true));
-		sword.rotate(30f);
+		sword.rotate(-10f);
 		if(attackAnim.getKeyFrameIndex(stateTime)==3)
 		{
 		    stateTime=0;
@@ -126,7 +126,8 @@ public class Player extends ActiveEntity
 	{
 	    isAttacking=true;
 	    stateTime=0;
-	    sword.setRotation(sword.getRotation()+2f);
+	    sword.setRotation(80);
+	   	  
 	}
 	
 	public void getAttacked(int dmg)
