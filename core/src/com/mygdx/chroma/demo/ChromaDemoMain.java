@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.chroma.demo.screen.FightScreen;
+import com.mygdx.chroma.demo.screen.MapScreen;
 import com.mygdx.chroma.demo.screen.ScreenManager;
 
 /**
@@ -16,10 +17,11 @@ import com.mygdx.chroma.demo.screen.ScreenManager;
  */
 public class ChromaDemoMain extends ApplicationAdapter {
 	private SpriteBatch batch;
-
+	private State state;
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		state=new State();
 		ScreenManager.setScreen(new FightScreen());
 	}
 

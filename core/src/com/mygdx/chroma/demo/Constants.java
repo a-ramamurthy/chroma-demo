@@ -13,7 +13,7 @@ public class Constants
 {
 
 	/** The number of squares in each column and row of the world map. */
-	public static final int GRID_SIZE=5;
+	public static final int GRID_SIZE=3;
 	/** The width of the game screen in pixels. */
 	public static final int WIDTH = 1280;
 	/** The height of the game screen in pixels. */
@@ -25,7 +25,7 @@ public class Constants
 	
 	public static final boolean DEBUG_ON=true;
 	
-	public static final Vector2 GRAVITY=new Vector2(0,-100f);
+	public static final Vector2 GRAVITY=new Vector2(0,-300f);
 	
 	public static final float WORLD_STEP=1/60f;
 	

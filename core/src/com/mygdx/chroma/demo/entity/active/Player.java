@@ -29,6 +29,9 @@ public class Player extends ActiveEntity
     public boolean dir;
     public BodyDef bd;
     public FixtureDef fd;
+    FixtureDef box;
+    final short PHYSICS_ENTITY = 0x1;    // 0001
+	final short WORLD_ENTITY = 0x1 << 1; // 0010 or 0x2 in hex
     
     public Player(float x, float y)
     {
@@ -36,20 +39,22 @@ public class Player extends ActiveEntity
 	runningAnim=Constants.generateAnimation("player-running.png", 1, 4, Constants.ENTITY_ANIM_SPEED);
 	curSprite=new Sprite(runningAnim.getKeyFrame(0));
 	curSprite.setPosition(x, y);
-		
 	//Entity Mechanics
 	bd = new BodyDef();
 	bd.type = BodyDef.BodyType.DynamicBody;
-	bd.position.set(new Vector2(x, y));
+	bd.position.set((curSprite.getX() + curSprite.getWidth()/2)/Constants.PIXELS_PER_METER,(curSprite.getY())/Constants.PIXELS_PER_METER);
 	bd.fixedRotation=true;
 	PolygonShape hitbox=new PolygonShape();
-	hitbox.setAsBox(curSprite.getWidth()/2, curSprite.getHeight()/2);
+	hitbox.setAsBox(curSprite.getWidth()/2/Constants.PIXELS_PER_METER, curSprite.getHeight()/2/Constants.PIXELS_PER_METER);
 	fd = new FixtureDef();
 	fd.shape=hitbox;
 	fd.density=0.5f;
 	fd.restitution=0;
 	fd.friction=100f;
-	
+	stateTime=0f;
+	fd.filter.categoryBits = PHYSICS_ENTITY;
+	fd.filter.maskBits = PHYSICS_ENTITY|WORLD_ENTITY;
+	//bd=fd;
 	
 	
 	dir=Constants.RIGHT;
@@ -63,14 +68,14 @@ public class Player extends ActiveEntity
 	{
 		if (!isJumping)
 		{
-			body.applyLinearImpulse(new Vector2(0, 500000), new Vector2(body.getPosition().x, body.getPosition().y), true);
+			body.setLinearVelocity(body.getLinearVelocity().x, 500000f+body.getLinearVelocity().y);
 			isJumping=true;
 		}
 	}
 
 	public void fallFast()
 	{
-	    body.applyLinearImpulse(new Vector2(0, -500000), new Vector2(body.getPosition().x, body.getPosition().y), true);
+		body.setLinearVelocity(body.getLinearVelocity().x, -500000f+body.getLinearVelocity().y);
 	}
 	
 	public void move(boolean direction)
@@ -80,9 +85,9 @@ public class Player extends ActiveEntity
 	    isRunning=true;
 	    
 	    if(dir==Constants.RIGHT)	
-		body.setLinearVelocity(new Vector2(500000, 0));
+		body.setLinearVelocity(new Vector2(500000, Constants.GRAVITY.y*100));
 	    else
-		body.setLinearVelocity(new Vector2(-500000, 0));
+		body.setLinearVelocity(new Vector2(-500000, Constants.GRAVITY.y*100));
 	}
 
 	public void update()
@@ -98,6 +103,7 @@ public class Player extends ActiveEntity
 	    else if(isStationary)
 		curSprite.setRegion(runningAnim.getKeyFrame(0));
 	    body.setUserData(curSprite);
+	    curSprite.setPosition(body.getPosition().x, body.getPosition().y);
 	  
 	}
 
