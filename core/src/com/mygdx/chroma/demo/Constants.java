@@ -38,6 +38,8 @@ public class Constants
 	public static final boolean LEFT = false;
 	public static final boolean RIGHT = true;
 	
+	public static final int BOSS_DEF=4;
+	public static final float BOSS_MASS=800f;
 	
 	
 	//TOOLS

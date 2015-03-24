@@ -125,7 +125,7 @@ public class Player extends ActiveEntity
 	  
 	}
 
-	public void attack()
+	public void attack(Boss boss)
 	{
 	    isAttacking=true;
 	    stateTime=0;
@@ -133,6 +133,7 @@ public class Player extends ActiveEntity
 		sword.setRotation(90);
 	    else
 		sword.setRotation(-90);
+	    boss.getAttacked(100);
 	   	  
 	}
 	
