@@ -195,7 +195,7 @@ public class FightScreen extends Screen
 			
 		}
 		if(player.isAttacking)
-		sb.draw(player.sword, player.curSprite.getX()+player.curSprite.getWidth()/2,player.curSprite.getY()+player.curSprite.getHeight()/2, player.sword.getWidth(), player.sword.getHeight(), player.sword.getHeight(), player.sword.getWidth(), -1, -1, player.sword.getRotation(), true);
+		sb.draw(player.sword, player.curSprite.getX()+player.curSprite.getWidth()/2,player.curSprite.getY()+player.curSprite.getHeight()/2, 0, 0, player.sword.getHeight(), player.sword.getWidth(), 2, 1, player.sword.getRotation(), true);
 		//sb.draw(terrain[0][0].image,terrain[0][0].image.getX(),terrain[0][0].image.getY());
 		//sb.draw(terrain[1][0].image,terrain[1][0].image.getX(),terrain[1][0].image.getY());
 		

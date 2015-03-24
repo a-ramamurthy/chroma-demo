@@ -104,7 +104,10 @@ public class Player extends ActiveEntity
 	     else if (isAttacking)
 	    {
 		curSprite.setRegion(attackAnim.getKeyFrame(stateTime+=Gdx.graphics.getDeltaTime(), true));
-		sword.rotate(-10f);
+		if(dir==Constants.RIGHT)
+		    sword.rotate(-10f);
+		else
+		    sword.rotate(10f);
 		if(attackAnim.getKeyFrameIndex(stateTime)==3)
 		{
 		    stateTime=0;
@@ -117,7 +120,7 @@ public class Player extends ActiveEntity
 	   
 	    else if(isStationary)
 		curSprite.setRegion(runningAnim.getKeyFrame(0));
-	    
+
 	    curSprite.setPosition(body.getPosition().x, body.getPosition().y);
 	  
 	}
@@ -126,7 +129,10 @@ public class Player extends ActiveEntity
 	{
 	    isAttacking=true;
 	    stateTime=0;
-	    sword.setRotation(80);
+	    if(dir==Constants.RIGHT)
+		sword.setRotation(90);
+	    else
+		sword.setRotation(-90);
 	   	  
 	}
 	
