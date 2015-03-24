@@ -7,6 +7,7 @@ package com.mygdx.chroma.demo.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -17,6 +18,7 @@ public class GameOverScreen extends Screen
 {
 
     Texture image;
+    Music music;
     /* (non-Javadoc)
      * @see com.mygdx.chroma.demo.screen.Screen#create()
      */
@@ -24,7 +26,8 @@ public class GameOverScreen extends Screen
     public void create()
     {
 	image=new Texture(Gdx.files.internal("game-over.png"));
-	
+	music=Gdx.audio.newMusic(Gdx.files.internal("game-over-theme.mp3"));
+	music.play();
     }
 
     /* (non-Javadoc)
@@ -34,7 +37,10 @@ public class GameOverScreen extends Screen
     public void update()
     {
 	if(Gdx.input.isKeyPressed(Keys.ENTER))
+	{
+	    music.dispose();
 	    ScreenManager.setScreen(new FightScreen());
+	}
 	if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 		System.exit(0);
 	
