@@ -15,6 +15,7 @@ import com.mygdx.chroma.demo.entity.Entity;
 public abstract class ActiveEntity extends Entity
 {
 	
-
+    public boolean hurt;
+    public float invincibility;
 
 }

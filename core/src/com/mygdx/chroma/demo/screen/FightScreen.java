@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -60,6 +61,7 @@ public class FightScreen extends Screen
 		backdrop=new Texture(Gdx.files.internal("temp-background.jpg"));
 		camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		debugRenderer=new Box2DDebugRenderer();
+		shapeRenderer=new ShapeRenderer();
 		backdrop=new Texture(Gdx.files.internal("temp-background.jpg"));
 		initTerrain();
 		initPlayer();
@@ -90,7 +92,6 @@ public class FightScreen extends Screen
 		{
 			//float stackHeight=(float)(Math.random()*Constants.TERRAIN_VARIANCE-Constants.TERRAIN_VARIANCE/2+Constants.HEIGHT/4);
 			float stackHeight=200;
-			System.out.println("Stack Height: "+stackHeight);
 			terrain[c][0]=new Terrain(4+c*129, stackHeight, "grass-block-top.png");
 			for(int r=1; r<terrain[0].length; r++)
 				terrain[c][r]=new Terrain(4+c*129, stackHeight-20f*r, "grass-block-side.png");
@@ -143,7 +144,7 @@ public class FightScreen extends Screen
 		if(Gdx.input.isKeyPressed(Keys.RIGHT))
 			player.move(Constants.RIGHT);
 		if(Gdx.input.isKeyJustPressed(Keys.Z))
-			player.getAttacked(10);
+			player.attack();
 
 
 	}
@@ -182,28 +183,47 @@ public class FightScreen extends Screen
 		debugMatrix = batch.getProjectionMatrix().cpy().scale(0.001f*Constants.PIXELS_PER_METER, 0.001f*Constants.PIXELS_PER_METER, 0);
 		sb.begin();
 		sb.draw(backdrop,0,0,Constants.WIDTH,Constants.HEIGHT);
-		System.out.println(player.curSprite.getX());
-		System.out.println(player.curSprite.getY());
+		
 		if(player.dir==Constants.LEFT)
+		{
 			sb.draw(player.curSprite,player.curSprite.getX()+100,player.curSprite.getY(),-100,100);
+			
+		}
 		else
+		{
 			sb.draw(player.curSprite,player.curSprite.getX(),player.curSprite.getY(),100,100);
-
+			
+		}
+		if(player.isAttacking)
+		sb.draw(player.sword, player.curSprite.getX()+player.curSprite.getWidth()/2,player.curSprite.getY()+player.curSprite.getHeight()/2, 0, 0, player.sword.getWidth(), player.sword.getHeight(), 1, 1, player.sword.getRotation(), true);
 		//sb.draw(terrain[0][0].image,terrain[0][0].image.getX(),terrain[0][0].image.getY());
 		//sb.draw(terrain[1][0].image,terrain[1][0].image.getX(),terrain[1][0].image.getY());
-
+		
 		for(Terrain[] stack : terrain)
 			for(Terrain block : stack)
 			{
 				sb.setColor(new Color(0.5f, 0.5f, 0.5f, 1));
-				sb.draw(block.image, block.image.getX(), block.image.getY());
+				//sb.draw(block.image, block.image.getX(), block.image.getY());
 				sb.setColor(Color.WHITE);
 			}
 		sb.end();
-		debugRenderer.render(world, debugMatrix);
+		renderHealthBar(player);
+		//debugRenderer.render(world, debugMatrix);
 
 	}
 
+	public void renderHealthBar(Player player)
+	{
+		shapeRenderer.begin(ShapeType.Filled);
+		
+		shapeRenderer.setColor(Color.RED);
+		if (player.dir)
+			shapeRenderer.rect(player.curSprite.getX()+player.hp,player.curSprite.getY()+player.curSprite.getHeight()+20,-player.hp,10);
+		else
+			shapeRenderer.rect(player.curSprite.getX(),player.curSprite.getY()+player.curSprite.getHeight()+20,player.hp,10);
+		shapeRenderer.end();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.mygdx.chroma.demo.screen.Screen#resize(int, int)

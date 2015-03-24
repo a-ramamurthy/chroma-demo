@@ -7,6 +7,7 @@ package com.mygdx.chroma.demo.entity.active;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -18,7 +19,7 @@ import com.mygdx.chroma.demo.State;
  */
 public class Player extends ActiveEntity
 {
-    private Animation runningAnim;
+    private Animation runningAnim, attackAnim;
     public Sprite curSprite;
     public Body body;
     public Fixture fixture;
@@ -34,13 +35,19 @@ public class Player extends ActiveEntity
     FixtureDef box;
     final short PHYSICS_ENTITY = 0x1;    // 0001
 	final short WORLD_ENTITY = 0x1 << 1; // 0010 or 0x2 in hex
+	
+	public Sprite sword;
+	public Fixture swordF;
+	public FixtureDef sfd;
     
     public Player(float x, float y)
     {
 	//Entity Graphics
 	runningAnim=Constants.generateAnimation("player-running.png", 1, 4, Constants.ENTITY_ANIM_SPEED);
+	attackAnim=Constants.generateAnimation("player-full.png", 1, 4, Constants.ENTITY_ANIM_SPEED);
 	curSprite=new Sprite(runningAnim.getKeyFrame(0));
 	curSprite.setPosition(x, y);
+	sword=new Sprite(new Texture(Gdx.files.internal("sword.png")));
 	//Entity Mechanics
 	hp=100;
 	bd = new BodyDef();
@@ -57,7 +64,12 @@ public class Player extends ActiveEntity
 	stateTime=0f;
 	fd.filter.categoryBits = PHYSICS_ENTITY;
 	fd.filter.maskBits = PHYSICS_ENTITY|WORLD_ENTITY;
-	//bd=fd;
+
+
+	sfd=new FixtureDef();
+	PolygonShape swordHitbox=new PolygonShape();
+	swordHitbox.setAsBox(curSprite.getWidth()/2/Constants.PIXELS_PER_METER, curSprite.getHeight()/2/Constants.PIXELS_PER_METER, new Vector2(0,0), 0f);
+	sfd.shape=swordHitbox;
 	
 	
 	dir=Constants.RIGHT;
@@ -67,7 +79,7 @@ public class Player extends ActiveEntity
 	
     }
     
-   
+    
 
 	public void move(boolean direction)
 	{
@@ -89,11 +101,23 @@ public class Player extends ActiveEntity
 	       isRunning=false;
 	    if(isJumping)
 		curSprite.setRegion(runningAnim.getKeyFrame(0));
-	    else if (isRunning)
+	     else if (isAttacking)
+	    {
+		curSprite.setRegion(attackAnim.getKeyFrame(stateTime+=Gdx.graphics.getDeltaTime(), true));
+		sword.rotate(30f);
+		if(attackAnim.getKeyFrameIndex(stateTime)==3)
+		{
+		    stateTime=0;
+		    isAttacking=false;
+		    
+		}
+	    }
+	     else if (isRunning)
 	    	curSprite.setRegion(runningAnim.getKeyFrame(stateTime+=Gdx.graphics.getDeltaTime(), true));
+	   
 	    else if(isStationary)
 		curSprite.setRegion(runningAnim.getKeyFrame(0));
-	    body.setUserData(curSprite);
+	    
 	    curSprite.setPosition(body.getPosition().x, body.getPosition().y);
 	  
 	}
@@ -101,6 +125,8 @@ public class Player extends ActiveEntity
 	public void attack()
 	{
 	    isAttacking=true;
+	    stateTime=0;
+	    sword.setRotation(sword.getRotation()+2f);
 	}
 	
 	public void getAttacked(int dmg)
