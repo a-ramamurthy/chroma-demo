@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.chroma.demo.screen.FightScreen;
 import com.mygdx.chroma.demo.screen.MapScreen;
 import com.mygdx.chroma.demo.screen.ScreenManager;
+import com.mygdx.chroma.demo.screen.TitleScreen;
 
 /**
  * The main class for the demo for Chroma. *
@@ -22,7 +23,7 @@ public class ChromaDemoMain extends ApplicationAdapter {
 	public void create() {
 		batch = new SpriteBatch();
 		state=new State();
-		ScreenManager.setScreen(new FightScreen());
+		ScreenManager.setScreen(new TitleScreen());
 	}
 
 	@Override

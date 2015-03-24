@@ -5,6 +5,9 @@
  */
 package com.mygdx.chroma.demo.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -13,13 +16,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameOverScreen extends Screen
 {
 
+    Texture image;
     /* (non-Javadoc)
      * @see com.mygdx.chroma.demo.screen.Screen#create()
      */
     @Override
     public void create()
     {
-	// TODO Auto-generated method stub
+	image=new Texture(Gdx.files.internal("game-over.png"));
 	
     }
 
@@ -29,7 +33,10 @@ public class GameOverScreen extends Screen
     @Override
     public void update()
     {
-	// TODO Auto-generated method stub
+	if(Gdx.input.isKeyPressed(Keys.ENTER))
+	    ScreenManager.setScreen(new FightScreen());
+	if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+		System.exit(0);
 	
     }
 
@@ -39,7 +46,9 @@ public class GameOverScreen extends Screen
     @Override
     public void render(SpriteBatch sb)
     {
-	// TODO Auto-generated method stub
+	sb.begin();
+	sb.draw(image, 0, 0);
+	sb.end();
 	
     }
 

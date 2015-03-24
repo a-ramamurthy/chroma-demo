@@ -26,7 +26,9 @@ public class Player extends ActiveEntity
     private boolean isJumping;
     public boolean isRunning;
     public boolean isStationary;
+    public boolean isAttacking;
     public boolean dir;
+    public int hp;
     public BodyDef bd;
     public FixtureDef fd;
     FixtureDef box;
@@ -40,6 +42,7 @@ public class Player extends ActiveEntity
 	curSprite=new Sprite(runningAnim.getKeyFrame(0));
 	curSprite.setPosition(x, y);
 	//Entity Mechanics
+	hp=100;
 	bd = new BodyDef();
 	bd.type = BodyDef.BodyType.DynamicBody;
 	bd.position.set((curSprite.getX() + curSprite.getWidth()/2)/Constants.PIXELS_PER_METER,(curSprite.getY())/Constants.PIXELS_PER_METER);
@@ -64,20 +67,8 @@ public class Player extends ActiveEntity
 	
     }
     
-    public void jump()
-	{
-		if (!isJumping)
-		{
-			body.setLinearVelocity(body.getLinearVelocity().x, 500000f+body.getLinearVelocity().y);
-			isJumping=true;
-		}
-	}
+   
 
-	public void fallFast()
-	{
-		body.setLinearVelocity(body.getLinearVelocity().x, -500000f+body.getLinearVelocity().y);
-	}
-	
 	public void move(boolean direction)
 	{
 	    
@@ -85,9 +76,9 @@ public class Player extends ActiveEntity
 	    isRunning=true;
 	    
 	    if(dir==Constants.RIGHT)	
-		body.setLinearVelocity(new Vector2(500000, Constants.GRAVITY.y*100));
+		body.setLinearVelocity(new Vector2(5000000, 0f));
 	    else
-		body.setLinearVelocity(new Vector2(-500000, Constants.GRAVITY.y*100));
+		body.setLinearVelocity(new Vector2(-5000000, 0f));
 	}
 
 	public void update()
@@ -107,12 +98,18 @@ public class Player extends ActiveEntity
 	  
 	}
 
-	/**
-	 * 
-	 */
 	public void attack()
 	{
-	    // TODO Auto-generated method stub
+	    isAttacking=true;
+	}
+	
+	public void getAttacked(int dmg)
+	{
+	    if(dir==Constants.LEFT)
+		body.applyForceToCenter(new Vector2(1000000000f, 0), true);
+	    else
+		body.applyForceToCenter(new Vector2(-1000000000f, 0), true);
+	    hp-=dmg;
 	    
 	}
 }

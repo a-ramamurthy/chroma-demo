@@ -120,24 +120,30 @@ public class FightScreen extends Screen
 		fdLeft.shape=leftEdge;
 		Body left = world.createBody(bdLeft);
 		left.createFixture(fdLeft);
+		
+		BodyDef bdRight = new BodyDef();
+		bdRight.type=BodyDef.BodyType.StaticBody;
+		bdRight.position.set(Constants.WIDTH, 0);
+		FixtureDef fdRight=new FixtureDef();
+		EdgeShape rightEdge=new EdgeShape();
+		rightEdge.set(new Vector2(Constants.WIDTH-1400, 0), new Vector2(Constants.WIDTH-1400, Constants.HEIGHT));
+		fdRight.shape=rightEdge;
+		Body right = world.createBody(bdRight);
+		right.createFixture(fdRight);
 
 	}
 	public void checkControls()
 	{
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE))
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			System.exit(0);
-		if(Gdx.input.isKeyPressed(Keys.NUM_0))
-			System.exit(0);
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_0))
+			player.hp=0;
 		if(Gdx.input.isKeyPressed(Keys.LEFT))
 			player.move(Constants.LEFT);
 		if(Gdx.input.isKeyPressed(Keys.RIGHT))
 			player.move(Constants.RIGHT);
-		if(Gdx.input.isKeyJustPressed(Keys.UP))
-			player.jump();
-		if(Gdx.input.isKeyPressed(Keys.DOWN))
-			player.fallFast();
-		if(Gdx.input.isKeyPressed(Keys.SPACE))
-			player.attack();
+		if(Gdx.input.isKeyJustPressed(Keys.Z))
+			player.getAttacked(10);
 
 
 	}
@@ -149,6 +155,8 @@ public class FightScreen extends Screen
 	public void update()
 	{
 		checkControls();
+		if(player.hp<=0)
+		    ScreenManager.setScreen(new GameOverScreen());
 		camera.update();
 		player.update();
 		for(Terrain[] stack : terrain)
@@ -171,7 +179,7 @@ public class FightScreen extends Screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
 		batch.setProjectionMatrix(camera.combined);
-		debugMatrix = batch.getProjectionMatrix().cpy().scale(0.007f*Constants.PIXELS_PER_METER, 0.007f*Constants.PIXELS_PER_METER, 0);
+		debugMatrix = batch.getProjectionMatrix().cpy().scale(0.001f*Constants.PIXELS_PER_METER, 0.001f*Constants.PIXELS_PER_METER, 0);
 		sb.begin();
 		sb.draw(backdrop,0,0,Constants.WIDTH,Constants.HEIGHT);
 		System.out.println(player.curSprite.getX());

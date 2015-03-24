@@ -25,11 +25,11 @@ public class Constants
 	
 	public static final boolean DEBUG_ON=true;
 	
-	public static final Vector2 GRAVITY=new Vector2(0,-300f);
+	public static final Vector2 GRAVITY=new Vector2(0,-100f);
 	
 	public static final float WORLD_STEP=1/60f;
 	
-	public static final float ENTITY_ANIM_SPEED=0.25f;
+	public static final float ENTITY_ANIM_SPEED=0.15f;
 	
 	public static final float PLAYER_MASS=800;
 	
